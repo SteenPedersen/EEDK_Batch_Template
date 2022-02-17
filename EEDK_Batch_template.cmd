@@ -1,9 +1,11 @@
 ::@echo off
-:: Version 1.0.2
+:: Version 1.0.3
 ::     .AUTHORS
 ::        steen_pedersen@ - 2022
 ::
 pushd "%~dp0"
+SET SRCDIR=
+for /f "delims=" %%a in ('cd') do @set SRCDIR=%%a
 setlocal ENABLEEXTENSIONS
 setlocal EnableDelayedExpansion
 :: Set the ISO Date to yyyymmddhhmmss using wmic
@@ -31,16 +33,16 @@ echo %ISO_DATE_TIME% >>!l_EEDK_Debug_log!
 :: https://www.samlogic.net/articles/sysnative-folder-64-bit-windows.htm
 :: ################################################
 
-
 :: *******************
 :: Execute the script and commands you need here
+:: %SCRDIR% will point to the directory where the Agent is placing the files from the EEDK pacakge
+:: Example:
+:: %SCRDIR%\executable.exe /options A B C
 :: *******************
-
 
 :: Place the results to send back to ePO in Custom Props in l_results
 :: Example 
 set l_results=EEDK Script executed %ISO_DATE_TIME%
-
 
 
 :: ---------------------------
