@@ -1,5 +1,5 @@
 ::@echo off
-:: Version 1.0.3
+:: Version 1.0.4
 ::     .AUTHORS
 ::        steen_pedersen@ - 2022
 ::
@@ -8,10 +8,16 @@ SET SRCDIR=
 for /f "delims=" %%a in ('cd') do @set SRCDIR=%%a
 setlocal ENABLEEXTENSIONS
 setlocal EnableDelayedExpansion
-:: Set the ISO Date to yyyymmddhhmmss using wmic
+:: Set the ISO Date 2 to yyyymmddhhmmss using wmic
 :: this is not possible using %date% as the format can be different based on date settings
 for /F "tokens=2 delims==." %%I in ('wmic os get localdatetime /VALUE') do set "l_MyDate=%%I"
-set ISO_DATE_TIME=%l_MyDate:~0,14%
+set ISO_DATE_TIME2=%l_MyDate:~0,14%
+
+:: Set the ISO Date to yyyy-mm-dd hh:mm:ss.xxx using wmic - like 2022-02-17 13:36:25.466
+for /F "usebackq tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if '.%%i.'=='.LocalDateTime.' set ldt=%%j
+::set ISO_DATE_TIME=%ldt:~0,4%-%ldt:~4,2%-%ldt:~6,2% %ldt:~8,2%:%ldt:~10,2%:%ldt:~12,6%
+set ISO_DATE_TIME=!ldt:~0,4!-!ldt:~4,2!-!ldt:~6,2! !ldt:~8,2!:!ldt:~10,2!:!ldt:~12,6!
+
 set l_EEDK_Debug_log=%temp%\EEDK_Debug.log
 echo %ISO_DATE_TIME% >>!l_EEDK_Debug_log!
 
