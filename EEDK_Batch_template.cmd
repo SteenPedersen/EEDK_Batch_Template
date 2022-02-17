@@ -8,12 +8,12 @@ SET SRCDIR=
 for /f "delims=" %%a in ('cd') do @set SRCDIR=%%a
 setlocal ENABLEEXTENSIONS
 setlocal EnableDelayedExpansion
-:: Set the ISO Date 2 to yyyymmddhhmmss using wmic
+:: Set the ISO Date 2 to yyyymmddhhmmss using wmic - Like 20220217134245
 :: this is not possible using %date% as the format can be different based on date settings
 for /F "tokens=2 delims==." %%I in ('wmic os get localdatetime /VALUE') do set "l_MyDate=%%I"
 set ISO_DATE_TIME2=%l_MyDate:~0,14%
 
-:: Set the ISO Date to yyyy-mm-dd hh:mm:ss.xxx using wmic - like 2022-02-17 13:36:25.466
+:: Set the ISO Date to yyyy-mm-dd hh:mm:ss.xxx using wmic - like 2022-02-17 13:42:46.039
 for /F "usebackq tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if '.%%i.'=='.LocalDateTime.' set ldt=%%j
 ::set ISO_DATE_TIME=%ldt:~0,4%-%ldt:~4,2%-%ldt:~6,2% %ldt:~8,2%:%ldt:~10,2%:%ldt:~12,6%
 set ISO_DATE_TIME=!ldt:~0,4!-!ldt:~4,2!-!ldt:~6,2! !ldt:~8,2!:!ldt:~10,2!:!ldt:~12,6!
@@ -39,12 +39,13 @@ echo %ISO_DATE_TIME% >>!l_EEDK_Debug_log!
 :: https://www.samlogic.net/articles/sysnative-folder-64-bit-windows.htm
 :: ################################################
 
-:: *******************
-:: Execute the script and commands you need here
+:: *********************************************************
+:: ***  Execute the script and commands you need here   ****
+:: *********************************************************
 :: %SCRDIR% will point to the directory where the Agent is placing the files from the EEDK pacakge
 :: Example:
 :: %SCRDIR%\executable.exe /options A B C
-:: *******************
+:: *********************************************************
 
 :: Place the results to send back to ePO in Custom Props in l_results
 :: Example 
