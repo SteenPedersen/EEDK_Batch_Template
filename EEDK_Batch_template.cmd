@@ -1,5 +1,5 @@
 ::@echo off
-:: Version 1.0.4
+:: Version 1.0.5
 ::     .AUTHORS
 ::        steen_pedersen@ - 2022
 ::
@@ -42,10 +42,16 @@ echo %ISO_DATE_TIME% >>!l_EEDK_Debug_log!
 :: *********************************************************
 :: ***  Execute the script and commands you need here   ****
 :: *********************************************************
-:: %SCRDIR% will point to the directory where the Agent is placing the files from the EEDK pacakge
+:: %SRCDIR% will point to the directory where the Agent is placing the files from the EEDK pacakge
 :: Example:
-:: %SCRDIR%\executable.exe /options A B C
+:: %SRCDIR%\executable.exe /options A B C >>%l_EEDK_Debug_log%
 :: *********************************************************
+
+IF !ERRORLEVEL! NEQ 0 ( 
+   echo %ISO_DATE_TIME% EEDK Error running *Tool* Errorlevel !ERRORLEVEL! >>%l_EEDK_Debug_log%
+)else (
+echo %ISO_DATE_TIME% EEDK Done running *Tool* Errorlevel !ERRORLEVEL! >>%l_EEDK_Debug_log%
+)
 
 :: Place the results to send back to ePO in Custom Props in l_results
 :: Example 
@@ -77,7 +83,7 @@ if [!agent_path!] == [] goto :no_value
 ::echo Agent Location: %agent_path%
 ::DEBUG TEST
 ::set l_results=Status method
-%comspec% /c ""!agent_path!\maconfig.exe" -custom -prop8 "!l_results!""
+%comspec% /c ""!agent_path!\maconfig.exe" -custom -prop7 "!l_results!""
 %comspec% /c "%agent_path%\cmdagent.exe" -p
  
 goto end_of_file
